@@ -24,6 +24,9 @@ util.update:
 util.templates:
 	sh $(UTIL_DIR)/templates.sh
 
+util.assets:
+	sh $(UTIL_DIR)/assets.sh $(GO_DIR)/bin $(ROOT)
+
 link:
 	rm -f $(GO_DIR)/src/kurz
 	ln -sf $(ROOT) $(GO_DIR)/src/kurz

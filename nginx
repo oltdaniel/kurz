@@ -5,7 +5,7 @@ server {
   server_name example.com;
 
   location /assets {
-    root /home/daniel/git/kurz/assets;
+    alias /home/daniel/git/kurz/assets/;
     expires 30d;
   }
 

@@ -2,3 +2,4 @@ github.com/gin-gonic/gin
 github.com/aerospike/aerospike-client-go
 github.com/chilts/sid
 golang.org/x/crypto/bcrypt
+github.com/tdewolff/minify/cmd/minify

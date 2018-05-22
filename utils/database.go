@@ -14,6 +14,8 @@ var READ    = as.NewPolicy()
 var SESSION = as.NewWritePolicy(0, 86400)
 var QUERY   = as.NewQueryPolicy()
 
+type BinMap = as.BinMap
+
 func getClient() *as.Client {
   // Create new client
   client, err := as.NewClient("127.0.0.1", 3000)
@@ -34,4 +36,54 @@ func Key(set string, key string) *as.Key {
 
 func Identifier(data string) string {
   return sid.Id() + base64.StdEncoding.EncodeToString([]byte(data))
+}
+
+func GetUserById(id string, fields ...string) *as.Record {
+  // Build database statement
+  stm := as.NewStatement("kurz", "users", "id")
+
+  // Append fields
+  stm.BinNames = append(stm.BinNames , fields...)
+
+  // Add filter value to statement
+  stm.Addfilter(as.NewEqualFilter("id", id))
+
+  // Get records from database
+  recordset, err := DB.Query(QUERY, stm)
+
+  // Check for error
+  if err != nil {
+    return nil
+  }
+
+  // Get first record
+  rec := <-recordset.Records
+
+  // Return user record
+  return rec
+}
+
+func GetUserByEmail(email string, fields ...string) *as.Record {
+  // Build database statement
+  stm := as.NewStatement("kurz", "users", "email")
+
+  // Append fields
+  stm.BinNames = append(stm.BinNames , fields...)
+
+  // Add filter value to statement
+  stm.Addfilter(as.NewEqualFilter("email", email))
+
+  // Get records from database
+  recordset, err := DB.Query(QUERY, stm)
+
+  // Check for error
+  if err != nil {
+    return nil
+  }
+
+  // Get first record
+  rec := <-recordset.Records
+
+  // Return user record
+  return rec
 }

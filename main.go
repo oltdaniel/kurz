@@ -37,6 +37,13 @@ func main() {
 
   // Compile templates
   render.Add("base.index.tmpl", "layout.main.tmpl")
+  render.Add("base.about.tmpl", "layout.main.tmpl")
+  render.Add("base.terms.tmpl", "layout.main.tmpl")
+  render.Add("base.login.tmpl", "layout.main.tmpl")
+  render.Add("base.register.tmpl", "layout.main.tmpl")
+
+  render.Add("user.board.tmpl", "layout.user.tmpl")
+  render.Add("user.link.tmpl", "layout.user.tmpl")
 
   // Assign render engine
   r.HTMLRender = render
@@ -59,6 +66,7 @@ func main() {
   {
     guestGroup.GET("/", baseController.GETIndex)
     guestGroup.GET("/about", baseController.GETAbout)
+    guestGroup.GET("/terms", baseController.GETTerms)
     guestGroup.GET("/login", baseController.GETLogin)
     guestGroup.GET("/register", baseController.GETRegister)
 
@@ -76,11 +84,10 @@ func main() {
   {
     authorizedGroup.GET("/board", userController.GETBoard)
     authorizedGroup.GET("/link/:short", userController.GETLink)
-
-    authorizedGroup.POST("/links", userController.POSTLink)
   }
 
   // Handle calls
+  r.POST("/links", linkController.POSTLink)
   r.GET("/l/:short", linkController.GETLink)
 
   // Start instance
