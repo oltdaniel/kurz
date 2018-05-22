@@ -84,5 +84,5 @@ func main() {
   r.GET("/l/:short", linkController.GETLink)
 
   // Start instance
-  r.Run(":8080")
+  r.Run(":4001")
 }
