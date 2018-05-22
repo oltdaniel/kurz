@@ -12,18 +12,21 @@ func (b *Base) GETIndex(c *gin.Context) {
   c.HTML(200, "base.index.tmpl", map[string]interface{}{
     "title": "kurz",
   })
+  return
 }
 
 func (b *Base) GETAbout(c *gin.Context) {
   c.HTML(200, "base.about.tmpl", map[string]interface{}{
     "title": "kurz - about",
   })
+  return
 }
 
 func (b *Base) GETTerms(c *gin.Context) {
   c.HTML(200, "base.terms.tmpl", map[string]interface{}{
     "title": "kurz - terms",
   })
+  return
 }
 
 func (b *Base) GETLogin(c *gin.Context) {
@@ -41,6 +44,7 @@ func (b *Base) GETLogin(c *gin.Context) {
 
   // Render page
   c.HTML(200, "base.login.tmpl", extra)
+  return
 }
 
 func (b *Base) GETRegister(c *gin.Context) {
@@ -58,6 +62,7 @@ func (b *Base) GETRegister(c *gin.Context) {
 
   // Render page
   c.HTML(200, "base.register.tmpl", extra)
+  return
 }
 
 // POST routes
@@ -96,7 +101,7 @@ func (b *Base) POSTLogin(c *gin.Context) {
       utils.SessionSet(c, "info", "welcome user")
 
       // Success response
-      c.Redirect(302, "/board")
+      c.Redirect(302, "/u/board")
       return
     } else {
       // Set error message

@@ -3,6 +3,8 @@ package controllers
 // Load libraries
 import "github.com/gin-gonic/gin"
 
+import "kurz/utils"
+
 type Link int
 
 // GET routes
@@ -12,10 +14,11 @@ func (l *Link) GETLink(c *gin.Context) {
 
 // POST routes
 func (l *Link) POSTLink(c *gin.Context) {
-  // Check if user is signed in
-  if c.GetString("user") != "" {
+  // Get data
+  inpLink := c.PostForm("link")
 
-  } else {
+  // Generate random link hash
+  random := utils.LinkShort(inpLink)
 
-  }
+  c.String(200, random)
 }

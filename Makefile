@@ -1,5 +1,5 @@
 # Base
-run: util.templates
+run: util.templates util.assets
 	go run main.go
 
 build:

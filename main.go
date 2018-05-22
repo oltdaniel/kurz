@@ -72,10 +72,11 @@ func main() {
 
     guestGroup.POST("/login", baseController.POSTLogin)
     guestGroup.POST("/register", baseController.POSTRegister)
+    guestGroup.POST("/links", linkController.POSTLink)
   }
 
   // Group authorized only routes
-  authorizedGroup := r.Group("/")
+  authorizedGroup := r.Group("/u")
 
   // Add authorized only middleware to authorized group
   authorizedGroup.Use(middlewares.Authorized())
@@ -84,10 +85,12 @@ func main() {
   {
     authorizedGroup.GET("/board", userController.GETBoard)
     authorizedGroup.GET("/link/:short", userController.GETLink)
+    authorizedGroup.GET("/logout", userController.GETLogout)
+
+    authorizedGroup.POST("/links", userController.POSTLink)
   }
 
   // Handle calls
-  r.POST("/links", linkController.POSTLink)
   r.GET("/l/:short", linkController.GETLink)
 
   // Start instance

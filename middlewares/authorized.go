@@ -39,7 +39,7 @@ func Guest() gin.HandlerFunc {
     // Check value
     if user != "" {
       // Set status
-      c.Redirect(302, "/board")
+      c.Redirect(302, "/u/board")
 
       // End the request
       c.Abort()
