@@ -72,7 +72,8 @@ func main() {
 
     guestGroup.POST("/login", baseController.POSTLogin)
     guestGroup.POST("/register", baseController.POSTRegister)
-    guestGroup.POST("/links", linkController.POSTLink)
+
+    guestGroup.POST("/a/links", linkController.POSTApiLink)
   }
 
   // Group authorized only routes
@@ -86,12 +87,12 @@ func main() {
     authorizedGroup.GET("/board", userController.GETBoard)
     authorizedGroup.GET("/link/:short", userController.GETLink)
     authorizedGroup.GET("/logout", userController.GETLogout)
-
-    authorizedGroup.POST("/links", userController.POSTLink)
   }
 
-  // Handle calls
+  // Handle public calls
   r.GET("/l/:short", linkController.GETLink)
+
+  r.POST("/u/a/links", userController.POSTApiLink)
 
   // Start instance
   r.Run(":4001")

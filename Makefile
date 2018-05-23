@@ -27,6 +27,9 @@ util.templates:
 util.assets:
 	sh $(UTIL_DIR)/assets.sh $(GO_DIR)/bin $(ROOT)
 
+util.key:
+	sh $(UTIL_DIR)/key.sh 128
+
 link:
 	rm -f $(GO_DIR)/src/kurz
 	ln -sf $(ROOT) $(GO_DIR)/src/kurz

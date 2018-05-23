@@ -5,13 +5,29 @@ import "github.com/gin-gonic/gin"
 
 import "kurz/utils"
 
+import "time"
+
 type User int
 
 // GET routes
 func (u *User) GETBoard(c *gin.Context) {
+  // Get token
+  token := c.GetString("token")
+
+  // Check if token exists
+  if token == "" {
+    // Build new token
+    token = utils.JWTBuild(c.GetString("user"))
+
+    // Assign token
+    c.Set("token", token)
+  }
+
   c.HTML(200, "user.board.tmpl", map[string]interface{}{
     "title": "kurz",
+    "token": token,
   })
+  return
 }
 
 func (u *User) GETLink(c *gin.Context) {
@@ -34,7 +50,93 @@ func (u *User) GETLogout(c *gin.Context) {
 }
 
 // POST routes
-func (u *User) POSTLink(c *gin.Context) {
-  c.String(200, "Hello World")
-  return
+func (u *User) POSTApiLink(c *gin.Context) {
+  // Get data
+  inpLink   := c.PostForm("link")
+  inpSlug   := c.PostForm("slug")
+  inpToken  := c.Query("token")
+
+  // Validate jwt
+  token, err := utils.JWTParse(inpToken)
+
+  // Check for error
+  if err != nil {
+    // Error response
+    c.JSON(403, map[string]interface{}{
+      "error": true,
+      "message": "invalid token",
+    })
+    return
+  }
+
+  // Validate url
+  if !utils.ValidateLink(inpLink) {
+    // Error response
+    c.JSON(402, map[string]interface{}{
+      "error": true,
+      "message": "invalid link",
+    })
+    return
+
+  } else {
+    // Rmemeber key properties
+    var key *utils.DKey
+    var random string
+
+    // Check for slug
+    if inpSlug != "" {
+      // Assing random
+      random = inpSlug
+
+      // Build database key
+      key = utils.Key("links", inpSlug)
+
+      // Check if key exists
+      exists, err := utils.DB.Exists(utils.READ, key)
+
+      // Check for error
+      if exists || err != nil {
+        // Error response
+        c.JSON(409, map[string]interface{}{
+          "error": true,
+          "message": "slug in use",
+        })
+        return
+      }
+
+    } else {
+      // Generate random link hash
+      random, key = utils.LinkShort()
+    }
+
+    // Buld bins
+    bins := utils.BinMap{
+      "link": inpLink,
+      "slug": random,
+      "created_at": time.Now().Unix(),
+      "author": token["user"],
+      "ip": c.ClientIP(),
+    }
+
+    // Insert into database
+    err := utils.DB.Put(utils.WRITE_USER, key, bins)
+
+    // Check insert result
+    if err != nil {
+      // Error response
+      c.JSON(500, map[string]interface{}{
+        "error": true,
+        "message": "try again later",
+      })
+      return
+    }
+
+    // Success response
+    c.JSON(200, map[string]interface{}{
+      "error": false,
+      "message": "link inserted",
+      "data": random,
+    })
+    return
+  }
 }

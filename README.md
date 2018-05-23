@@ -73,6 +73,8 @@ $ vim Makefile
 $ 
 # Install dependencies
 $ make util.install
+# Generate API secret
+$ make util.key
 # Link kurz to go project folder
 $ make link
 # Add nginx configuration
