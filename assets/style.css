@@ -102,6 +102,8 @@ flash {
   text-align: center;
 }
 
+flash * { color: #ffffff; }
+
 flash[info] { background-color: #3026e8; box-shadow: 0 0 30px 6px rgba(48, 38, 232, 0.2); }
 flash[error] { background-color: #e82626; box-shadow: 0 0 30px 6px rgba(232, 38, 38, 0.2); }
 

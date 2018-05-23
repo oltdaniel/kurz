@@ -3,7 +3,7 @@ package utils
 import as "github.com/aerospike/aerospike-client-go"
 import nanoid "github.com/matoous/go-nanoid"
 
-const ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789#._-:!"
+const ALPHABET = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789"
 
 func LinkShort() (string, *as.Key) {
   // Generate random nano id

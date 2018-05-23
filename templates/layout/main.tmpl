@@ -20,12 +20,14 @@
   </head>
 
   <body>
+    <header>
     {{if .error}}
       <flash error>{{.error}}</flash>
     {{end}}
     {{if .info}}
       <flash info>{{.info}}</flash>
     {{end}}
+    </header>
 
     <brand><a href="/">kurz</a></brand>
 

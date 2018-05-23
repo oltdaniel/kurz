@@ -14,7 +14,7 @@ var READ    = as.NewPolicy()
 var SESSION = as.NewWritePolicy(0, 86400)
 var QUERY   = as.NewQueryPolicy()
 
-var WRITE_PUBLIC = as.NewWritePolicy(0, 2592000)
+var WRITE_PUBLIC = as.NewWritePolicy(0, 1209600)
 var WRITE_USER   = WRITE
 
 type BinMap = as.BinMap

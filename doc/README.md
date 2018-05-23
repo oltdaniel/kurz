@@ -6,4 +6,8 @@ documentation can be found [here in `api.md`](https://github.com/oltdaniel/kurz/
 
 ## Generation
 
-We use `abcdefghijklmnopqrstuvwxyz0123456789#._-:?!` as our charset. It is used with [`nanoid`](https://github.com/matoous/go-nanoid) to generate an 6 character long random identifier. The total number of possible urls is `6^55 = 6,285,195,213,566,005,335,561,053,533,150,026,217,291,776`, or in words `a lot`. Since it is also possible to use your own slug, the amount of urls that can be generated is ∞ _(infinity)_.
+We use `abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789` as our charset.
+It is used with [`nanoid`](https://github.com/matoous/go-nanoid) to generate an 6 
+character long random identifier. The total number of possible urls is `6^58 = 
+1,357,602,166,130,257,152,481,187,563,160,405,662,935,023,616`, or in words `a lot`.
+Since it is also possible to use your own slug, the amount of urls that can be generated is ∞ _(infinity)_.

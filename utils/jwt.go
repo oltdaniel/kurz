@@ -9,18 +9,18 @@ import "time"
 
 var SECRET = ReadKey()
 
-func ReadKey() string {
+func ReadKey() []byte {
   // Read key file
   dat, err := ioutil.ReadFile("key")
 
   // Throw error
   if err != nil {
     panic(err)
-    return ""
+    return []byte("")
   }
 
   // Return read data
-  return string(dat)
+  return dat
 }
 
 func JWTParse(tokenString string) (jwt.MapClaims, error) {
@@ -49,7 +49,7 @@ func JWTBuild(user string) string {
     "time": time.Now().Unix(),
   })
 
-  tokenString, err := token.SignedString([]byte(SECRET))
+  tokenString, err := token.SignedString(SECRET)
 
   if err != nil {
     panic(err)

@@ -72,7 +72,7 @@ func (u *User) POSTApiLink(c *gin.Context) {
   // Validate url
   if !utils.ValidateLink(inpLink) {
     // Error response
-    c.JSON(402, map[string]interface{}{
+    c.JSON(400, map[string]interface{}{
       "error": true,
       "message": "invalid link",
     })
