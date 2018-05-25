@@ -24,10 +24,15 @@ function d(m, u, d, c) {
 
 function a(t, m) {
   // Get header element
-  var h = document.getElementsByTagName('header')[0]
+  var h = document.getElementsByTagName('header')[0],
+      id = Math.random()
 
   // Clear all and add flash
-  h.innerHTML = '<flash ' + t + '>' + m + '</flash>'
+  h.innerHTML = '<flash ' + t + ' id="flash-' + id + '">' + m + '</flash>'
+
+  setTimeout(function() {
+    e('flash-' + id).remove()
+  }, 5000)
 }
 
 function remove(el) {
@@ -59,7 +64,9 @@ function removeTriggers() {
 
   for(var i = 0; i < el_delete.length; i++) {
     el_delete[i].onclick = function() {
-      remove(this)
+      if(confirm('are you sure to delete this?')) {
+        remove(this)
+      }
     }
   }
 }

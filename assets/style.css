@@ -25,6 +25,11 @@ links-delete {
   float: right;
 }
 
+p {
+  word-break: normal;
+  text-align: justify;
+}
+
 /* Basic elements */
 block { display: block; width: 100%; }
 

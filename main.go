@@ -43,6 +43,7 @@ func main() {
   render.Add("base.register.tmpl", "layout.main.tmpl")
 
   render.Add("user.board.tmpl", "layout.user.tmpl")
+  render.Add("user.settings.tmpl", "layout.user.tmpl")
 
   // Assign render engine
   r.HTMLRender = render
@@ -84,7 +85,10 @@ func main() {
   // Add routes
   {
     authorizedGroup.GET("/board", userController.GETBoard)
+    authorizedGroup.GET("/settings", userController.GETSettings)
     authorizedGroup.GET("/logout", userController.GETLogout)
+
+    authorizedGroup.POST("/settings", userController.POSTSettings)
   }
 
   // Handle public calls

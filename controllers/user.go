@@ -34,6 +34,33 @@ func (u *User) GETBoard(c *gin.Context) {
   return
 }
 
+func (u *User) GETSettings(c *gin.Context) {
+  // Get user database key
+  key := utils.Key("users", c.GetString("user"))
+
+  // Read record
+  rec, err := utils.DB.Get(utils.READ, key)
+
+  // Check for error
+  if err != nil {
+    // Error response
+    c.Redirect(302, "/u/logout")
+    return
+  }
+
+  // Generate api token
+  token := utils.JWTBuild(c.GetString("user"))
+
+  // Success response
+  c.HTML(200, "user.settings.tmpl", map[string]interface{}{
+    "title": "kurz - settings",
+    "email": rec.Bins["email"].(string),
+    "token": token,
+    "error": utils.SessionFlash(c, "error"),
+    "info": utils.SessionFlash(c, "info"),
+  })
+}
+
 func (u *User) GETLogout(c *gin.Context) {
   // Delete session
   utils.SessionDelete(c)
@@ -47,6 +74,42 @@ func (u *User) GETLogout(c *gin.Context) {
 }
 
 // POST routes
+func (u *User) POSTSettings(c *gin.Context) {
+  // Read data
+  inpEmail := c.PostForm("email")
+
+  // Validate email
+  if utils.ValidateEmail(inpEmail) {
+    // Build bins
+    bins := utils.BinMap{
+      "email": inpEmail,
+    }
+
+    // Build database key
+    key := utils.Key("users", c.GetString("user"))
+
+    // Update in database
+    err := utils.DB.Put(utils.WRITE, key, bins)
+
+    // Check for error
+    if err != nil {
+      // Set error message
+      utils.SessionSet(c, "error", "try again later")
+    } else {
+      // Set success message
+      utils.SessionSet(c, "info", "email updated")
+    }
+
+  } else {
+    // Set error message
+    utils.SessionSet(c, "error", "invalid email")
+  }
+
+  // Redirect
+  c.Redirect(302, "/u/settings")
+  return
+}
+
 func (u *User) POSTApiLink(c *gin.Context) {
   // Get data
   inpLink   := c.PostForm("link")

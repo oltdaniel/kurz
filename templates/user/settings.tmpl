@@ -1,0 +1,17 @@
+{{define "main"}}
+<h2>settings</h2>
+<br>
+<form action="/u/settings" method="post">
+<label for="i-email">email</label>
+<input type="email" name="email" placeholder="hi@tra.sh" value="{{.email}}">
+<button type="submit">update</button>
+</form>
+
+<br><br>
+
+<h2>api</h2>
+<b>token</b>:<br>
+<p>{{.token}}</p>
+{{end}}
+
+{{template "layout.user.tmpl" .}}
