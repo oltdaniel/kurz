@@ -94,6 +94,10 @@ $ make run
 
 Documentation can be found [here in `/doc`](https://github.com/oltdaniel/kurz/blob/master/doc/README.md).
 
+## Todo
+
+Please view the todo list [here in `TODO.md`](https://github.com/oltdaniel/kurz/blob/master/TODO.md).
+
 ## License
 
 _Just do what you'd like to_

@@ -36,7 +36,7 @@ function a(t, m) {
 }
 
 function remove(el) {
-  d('DELETE', '/u/del/' + el.getAttribute('data-link') + '?token=' + t, null, function() {
+  d('DELETE', '/u/a/del/' + el.getAttribute('data-link') + '?token=' + t, null, function() {
     // Parse response
     var response = JSON.parse(this.responseText)
 

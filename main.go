@@ -95,7 +95,7 @@ func main() {
   r.GET("/l/:short", linkController.GETLink)
 
   r.POST("/u/a/links", userController.POSTApiLink)
-  r.DELETE("/u/del/:short", userController.DELETEApiLink)
+  r.DELETE("/u/a/del/:short", userController.DELETEApiLink)
 
   // Start instance
   r.Run(":4001")

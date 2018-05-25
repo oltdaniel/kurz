@@ -3,6 +3,10 @@
 This is a small documentation on how `kurz` works in the background. The api
 documentation can be found [here in `api.md`](https://github.com/oltdaniel/kurz/blob/master/doc/api.md).
 
+## Duration
+
+Public links will be held in the database for 10 days, user created links for
+infinitie.
 
 ## Generation
 
