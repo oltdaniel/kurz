@@ -10,6 +10,20 @@ style="max-width: 300px; margin: 0 auto;">
 
 <h2>links</h2>
 
+<links id="list-links">
+{{range $el := .links}}
+  <row>
+    <a href="/l/{{index $el "slug"}}">/{{index $el "slug"}}</a>
+    <visits>{{index $el "visits"}}</visits> visits
+    <links-delete class="links-delete" data-link="{{index $el "slug"}}">Delete</links-delete>
+  </row>
+{{else}}
+<p>
+No links found
+</p>
+{{end}}
+</links>
+
 <script type="text/javascript">
 var t = '{{.token}}';
 </script>

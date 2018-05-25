@@ -91,3 +91,81 @@ func GetUserByEmail(email string, fields ...string) *as.Record {
   // Return user record
   return rec
 }
+
+func GetLinks(author string) []map[string]interface{} {
+  // Build database statement
+  stm := as.NewStatement("kurz" ,"links", "author")
+
+  // Append fields
+  stm.BinNames = append(stm.BinNames, "slug", "visits")
+
+  // Add filter value to statement
+  stm.Addfilter(as.NewEqualFilter("author", author))
+
+  // Get records from database
+  recordset, err := DB.Query(QUERY, stm)
+
+  // Check for error
+  if err != nil {
+    return nil
+  }
+
+  // Store the links in a new data structure
+  links := make([]map[string]interface{}, 0)
+
+  // Read all records
+  for r := range recordset.Records {
+    // Default value
+    if r.Bins["visits"] == nil {
+      r.Bins["visits"] = 0
+    }
+
+    // Build new data structure
+    e := map[string]interface{}{
+      "slug": r.Bins["slug"],
+      "visits": r.Bins["visits"],
+    }
+
+    // Append new link format
+    links = append(links, e)
+  }
+
+  // Return formatted links
+  return links
+}
+
+func DeleteLink(author string, slug string) bool {
+  // Build database key
+  key := Key("links", slug)
+
+  // Get record from database
+  rec, err := DB.Get(READ, key)
+
+  // Check for error
+  if err != nil {
+    return false
+  }
+
+  // Check if bin exists
+  b, exists := rec.Bins["author"]
+
+  if !exists {
+    return false
+  }
+
+  // Check for author
+  if b.(string) == author {
+    // Delete from database
+    existed, err := DB.Delete(WRITE, key)
+
+    // Check for error
+    if !existed || err != nil {
+      return false
+    }
+
+    return true
+
+  } else {
+    return false
+  }
+}

@@ -43,7 +43,6 @@ func main() {
   render.Add("base.register.tmpl", "layout.main.tmpl")
 
   render.Add("user.board.tmpl", "layout.user.tmpl")
-  render.Add("user.link.tmpl", "layout.user.tmpl")
 
   // Assign render engine
   r.HTMLRender = render
@@ -85,7 +84,6 @@ func main() {
   // Add routes
   {
     authorizedGroup.GET("/board", userController.GETBoard)
-    authorizedGroup.GET("/link/:short", userController.GETLink)
     authorizedGroup.GET("/logout", userController.GETLogout)
   }
 
@@ -93,6 +91,7 @@ func main() {
   r.GET("/l/:short", linkController.GETLink)
 
   r.POST("/u/a/links", userController.POSTApiLink)
+  r.DELETE("/u/del/:short", userController.DELETEApiLink)
 
   // Start instance
   r.Run(":4001")

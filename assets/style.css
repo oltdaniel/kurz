@@ -18,6 +18,12 @@
 /* Typography */
 h2 { font-size: 2.4rem; margin-bottom: 20px;}
 p, label { font-size: 1.1rem; }
+links-delete {
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  float: right;
+}
 
 /* Basic elements */
 block { display: block; width: 100%; }
@@ -34,6 +40,12 @@ footer, footer * {
   color: #aaa;
   padding: 20px 0;
 }
+
+links row {
+  padding: 15px 10px;
+}
+
+visits { margin-left: 20px; }
 
 /* Cover */
 cover {
@@ -123,4 +135,9 @@ brand {
 brand a {
   font-weight: bold;
   font-size: 1.2rem;
+}
+
+row {
+  clear: both;
+  display: block;
 }

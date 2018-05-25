@@ -23,16 +23,13 @@ func (u *User) GETBoard(c *gin.Context) {
     c.Set("token", token)
   }
 
+  // Get links
+  links := utils.GetLinks(c.GetString("user"))
+
   c.HTML(200, "user.board.tmpl", map[string]interface{}{
     "title": "kurz",
     "token": token,
-  })
-  return
-}
-
-func (u *User) GETLink(c *gin.Context) {
-  c.HTML(200, "user.link.tmpl", map[string]interface{}{
-    "title": "kurz - link",
+    "links": links,
   })
   return
 }
@@ -97,7 +94,7 @@ func (u *User) POSTApiLink(c *gin.Context) {
       // Check for error
       if exists || err != nil {
         // Error response
-        c.JSON(409, map[string]interface{}{
+        c.JSON(400, map[string]interface{}{
           "error": true,
           "message": "slug in use",
         })
@@ -139,4 +136,44 @@ func (u *User) POSTApiLink(c *gin.Context) {
     })
     return
   }
+}
+
+// DELETE routes
+func (u *User) DELETEApiLink(c *gin.Context) {
+  // Get data
+  inpSlug  := c.Param("short")
+  inpToken := c.Query("token")
+
+  // Validate jwt
+  token, err := utils.JWTParse(inpToken)
+
+  // Check for error
+  if err != nil {
+    // Error response
+    c.JSON(403, map[string]interface{}{
+      "error": true,
+      "message": "Invalid token",
+    })
+    return
+  }
+
+  // Delete link
+  success := utils.DeleteLink(token["user"].(string), inpSlug)
+
+  // Check for success
+  if success {
+    // Success response
+    c.JSON(200, map[string]interface{}{
+      "error": false,
+      "message": "link deleted",
+    })
+    return
+  }
+
+  // Error response
+  c.JSON(400, map[string]interface{}{
+    "error": true,
+    "message": "link does not exist",
+  })
+  return
 }

@@ -5,7 +5,7 @@ function r(l, f) { if(window.location.pathname == l) { f() } }
 function e(i) { return document.getElementById(i) }
 
 // AJAX request
-function d(u, d, c) {
+function d(m, u, d, c) {
   // new instance
   var newXHR = new XMLHttpRequest();
 
@@ -13,7 +13,7 @@ function d(u, d, c) {
   newXHR.addEventListener('load', c);
 
   // Set url
-  newXHR.open('POST', u);
+  newXHR.open(m, u);
 
   // Set body format
   newXHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -30,6 +30,40 @@ function a(t, m) {
   h.innerHTML = '<flash ' + t + '>' + m + '</flash>'
 }
 
+function remove(el) {
+  d('DELETE', '/u/del/' + el.getAttribute('data-link') + '?token=' + t, null, function() {
+    // Parse response
+    var response = JSON.parse(this.responseText)
+
+    // Handle error
+    if(response['error']) {
+      a('error', response['message'])
+      return
+    }
+
+    // Create alert
+    a('info', 'Deleted')
+
+    // Remove parent
+    el.parentNode.remove()
+
+    // Check if links are empty
+    if(e('list-links').innerText.trim() == '') {
+      e('list-links').innerHTML = '<p>No links found</p>'
+    }
+  })
+}
+
+function removeTriggers() {
+  var el_delete = document.getElementsByTagName('links-delete')
+
+  for(var i = 0; i < el_delete.length; i++) {
+    el_delete[i].onclick = function() {
+      remove(this)
+    }
+  }
+}
+
 r('/', function() {
   var el_submit = e('b-submit'),
       el_link   = e('i-link')
@@ -40,7 +74,7 @@ r('/', function() {
     e.preventDefault()
 
     // Post request to api with token
-    d('/a/links', 'link=' + encodeURI(el_link.value), function() {
+    d('POST', '/a/links', 'link=' + encodeURI(el_link.value), function() {
       // Parse response
       var response = JSON.parse(this.responseText)
 
@@ -75,7 +109,7 @@ r('/u/board', function() {
     e.preventDefault()
 
     // Post request to api with token
-    d('/u/a/links?token=' + t, 'link=' + encodeURI(el_link.value) + '&slug=' + encodeURI(el_slug.value), function() {
+    d('POST', '/u/a/links?token=' + t, 'link=' + encodeURI(el_link.value) + '&slug=' + encodeURI(el_slug.value), function() {
       // Parse response
       var response = JSON.parse(this.responseText)
 
@@ -94,6 +128,24 @@ r('/u/board', function() {
       // Clear input field
       el_link.value = ''
       el_slug.value = ''
+
+      // Clear links element if required
+      if(el_links.innerText.trim() == 'No links found') {
+        el_links.innerHTML = ''
+      }
+
+      // Append link
+      el_links.innerHTML += '<row>' +
+        '  <a href="/l/' + s + '">/' + s + '</a>' +
+        '  <visits>0</visits> visits' +
+        '  <links-delete class="links-delete" data-link="' + s + '">Delete</links-delete>' +
+        '</row>'
+
+      // Links delte action reassign
+      removeTriggers()
     })
   }
+
+  // Links delete action
+  removeTriggers()
 })
